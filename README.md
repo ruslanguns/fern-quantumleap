@@ -32,5 +32,7 @@ fern generate
 - QuantumLeap API Reference:
   - [Repository](https://github.com/FIWARE-GEs/quantum-leap/blob/master/specification/quantumleap.yml)
   - [Swagger](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb)
-- [Fern](https://docs.buildwithfern.com/)
-- [Fern Typescript-SDK](https://docs.buildwithfern.com/showcase/typescript-sdk)
+- [Fern Website](https://docs.buildwithfern.com/)
+- Fern Typescript-SDK
+  - [Documentation](https://docs.buildwithfern.com/showcase/typescript-sdk)
+  - [Repository](https://github.com/fern-api/fern-typescript)
