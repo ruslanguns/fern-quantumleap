@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+service:
+  auth: false
+  base-path: ""
+  endpoints:
+    reporterApiListOfApi:
+      path: /v2/
+      method: GET
+      display-name: Returns the List of API's available in QuantumLeap.
+
+    reporterVersionVersion:
+      path: /version
+      method: GET
+      display-name: Returns the version of QuantumLeap.
+      response: _InlinedType0
+
+    reporterReporterConfig:
+      path: /management/config
+      method: POST
+      display-name: >-
+        (To Be Implemented) Customize your persistance configuration to better
+        suit your needs.
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          replicas:
+            docs: The number of replicas to use for the selected types.
+            type: optional<double>
+
+    reporterHealthGetHealth:
+      path: /health
+      method: GET
+      docs: >-
+        This endpoint is intended for administrators of QuantumLeap. Using the
+        information returned by this endpoint they can diagnose problems in the
+        service or its dependencies. This information is also useful for cloud
+        tools such as orchestrators and load balancers with rules based on
+        health-checks. Due to the lack of a standardized response format, we
+        base the implementation on the draft of
+        https://inadarei.github.io/rfc-healthcheck/
+        QuantumlLeap's dependencies are the following: - CrateDB: Critical -
+        Redis:   Critical only if geocoding is enabled. - OSM:     Non-critical
+      display-name: >-
+        Returns the health-check status of QuantumLeap and the services it
+        depends on.
+      response: _InlinedType1
+
+types:
+  _InlinedType0:
+    properties:
+      version: optional<string>
+
+  _InlinedType1:
+    properties:
+      status: optional<string>

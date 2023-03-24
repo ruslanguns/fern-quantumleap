@@ -1,0 +1,160 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+service:
+  auth: false
+  base-path: /management/queue/notifications
+  endpoints:
+    wqQlNotifyListInsertTasks:
+      path: ""
+      method: GET
+      docs: >-
+        This endpoint returns notification tasks in the work queue for the given
+        FIWARE service and service path. Optionally, it is possible to specify
+        task status and/or a FIWARE correlation ID to reduce scope further, so
+        that only tasks in the given status and/or having that ID are
+        considered. Each returned task object includes the original NGSI entity
+        payload that was submitted to the notify endpoint as well as task
+        runtime information: task ID, status, any errors occurred while
+        executing the task and how many retries are left if retries were
+        configured.
+      display-name: Retrieve notification tasks offloaded to the work queue.
+      request:
+        query-parameters:
+          taskStatus:
+            docs: >-
+              Optional parameter to filter tasks by status in the work queue
+              management endpoints.
+            type: optional<_InlinedType135>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          Fiware-Correlator:
+            docs: >-
+              The request correlation ID Context Broker forwards in notification
+              messages. See
+              https://fiware-orion.readthedocs.io/en/latest/admin/logs/index.html
+            type: optional<string>
+      response: list<_InlinedType137>
+
+    wqQlNotifyDeleteInsertTasks:
+      path: ""
+      method: DELETE
+      docs: >-
+        This endpoint deletes all notification tasks in the work queue for the
+        given FIWARE service and service path. Optionally, it is possible to
+        specify a FIWARE correlation ID to reduce scope further, so that only
+        tasks having that ID are deleted.
+      display-name: Delete notification tasks from the work queue.
+      request:
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          Fiware-Correlator:
+            docs: >-
+              The request correlation ID Context Broker forwards in notification
+              messages. See
+              https://fiware-orion.readthedocs.io/en/latest/admin/logs/index.html
+            type: optional<string>
+
+    wqQlNotifyListInsertTasksRuntimeInfo:
+      path: /summary
+      method: GET
+      docs: >-
+        This endpoint returns runtime information about notification tasks in
+        the work queue for the given FIWARE service and service path.
+        Optionally, it is possible to specify a FIWARE correlation ID to reduce
+        scope further, so that only tasks having that ID are considered. The
+        runtime information includes task ID, status, any errors occurred while
+        executing the task and how many retries are left if retries were
+        configured.
+      display-name: Retrieve a summary of notification tasks offloaded to the work queue.
+      request:
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          Fiware-Correlator:
+            docs: >-
+              The request correlation ID Context Broker forwards in notification
+              messages. See
+              https://fiware-orion.readthedocs.io/en/latest/admin/logs/index.html
+            type: optional<string>
+      response: list<_InlinedType138>
+
+    wqQlNotifyCountInsertTasks:
+      path: /count
+      method: GET
+      docs: >-
+        This endpoint counts how many notification tasks are in in the work
+        queue, optionally filtering by tasks status, FIWARE service, service
+        path and correlation ID. This endpoint returns the size of the set of
+        tasks determined by the above input filters. If no filters are
+        specified, then the all tasks are counted.
+      display-name: Count notification tasks offloaded to the work queue.
+      request:
+        query-parameters:
+          taskStatus:
+            docs: >-
+              Optional parameter to filter tasks by status in the work queue
+              management endpoints.
+            type: optional<_InlinedType139>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          Fiware-Correlator:
+            docs: >-
+              The request correlation ID Context Broker forwards in notification
+              messages. See
+              https://fiware-orion.readthedocs.io/en/latest/admin/logs/index.html
+            type: optional<string>
+      response: double
+
+types:
+  _InlinedType136:
+    enum:
+      - pending
+      - succeeded
+      - failed
+
+  _InlinedType137:
+    properties: {}
+
+  _InlinedType138:
+    properties: {}
+
+  _InlinedType140:
+    enum:
+      - pending
+      - succeeded
+      - failed

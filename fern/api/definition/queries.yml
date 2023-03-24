@@ -1,0 +1,2205 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+service:
+  auth: false
+  base-path: /v2
+  endpoints:
+    reporterQueryNtneQueryNtne:
+      path: /entities
+      method: GET
+      docs: >-
+        For example, query the entities for entityId available in database
+        specific to fiware-Service and fiware-ServicePath.
+      display-name: List of all the entityId
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType3
+
+    reporterQuery1T1E1AQuery1T1E1A:
+      path: /entities/{entityId}/attrs/{attrName}
+      method: GET
+      docs: >-
+        For example, query max water level of the central tank throughout the
+        last year. Queries can get more sophisticated with the use of filters
+        and query attributes.
+      display-name: History of an attribute of a given entity instance.
+      path-parameters:
+        entityId:
+          docs: >-
+            The entity id in which the query is restricted on. If the id is
+            unique among all entity types, this could be used to uniquely
+            identify the entity instance. Otherwise, you will have to use the
+            entityType attribute to resolve ambiguity.
+          type: string
+        attrName:
+          docs: >-
+            The name of the attribute the query is interested on. It must be a
+            valid attribute of all the entities covered by the query scope.
+          type: string
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType4>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType6>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType8>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType10>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType12
+
+    reporterQuery1T1E1AQuery1T1E1AValue:
+      path: /entities/{entityId}/attrs/{attrName}/value
+      method: GET
+      docs: >-
+        Similar to the previous, but focusing on the values regardless of the
+        metadata.
+      display-name: History of an attribute (values only) of a given entity instance.
+      path-parameters:
+        entityId:
+          docs: >-
+            The entity id in which the query is restricted on. If the id is
+            unique among all entity types, this could be used to uniquely
+            identify the entity instance. Otherwise, you will have to use the
+            entityType attribute to resolve ambiguity.
+          type: string
+        attrName:
+          docs: >-
+            The name of the attribute the query is interested on. It must be a
+            valid attribute of all the entities covered by the query scope.
+          type: string
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType13>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType15>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType17>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType19>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: IndexedValues
+
+    reporterQuery1T1EnaQuery1T1Ena:
+      path: /entities/{entityId}
+      method: GET
+      docs: >-
+        For example, query the average pressure, temperature and humidity of
+        this month in the weather station WS1.
+      display-name: History of N attributes of a given entity instance.
+      path-parameters:
+        entityId:
+          docs: >-
+            The entity id in which the query is restricted on. If the id is
+            unique among all entity types, this could be used to uniquely
+            identify the entity instance. Otherwise, you will have to use the
+            entityType attribute to resolve ambiguity.
+          type: string
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          attrs:
+            docs: >-
+              Optional. Comma-separated list of attribute names whose data are
+              to be included in the response. The attributes are retrieved in
+              the order specified by this parameter. If not specified, all
+              attributes are included in the response in arbitrary order.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType21>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType23>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType25>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType27>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType29
+
+    reporterQuery1T1EnaQuery1T1EnaValue:
+      path: /entities/{entityId}/value
+      method: GET
+      docs: >-
+        For example, query the average pressure, temperature and humidity
+        (values only, no metadata) of this month in the weather station WS1.
+      display-name: History of N attributes (values only) of a given entity instance.
+      path-parameters:
+        entityId:
+          docs: >-
+            The entity id in which the query is restricted on. If the id is
+            unique among all entity types, this could be used to uniquely
+            identify the entity instance. Otherwise, you will have to use the
+            entityType attribute to resolve ambiguity.
+          type: string
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          attrs:
+            docs: >-
+              Optional. Comma-separated list of attribute names whose data are
+              to be included in the response. The attributes are retrieved in
+              the order specified by this parameter. If not specified, all
+              attributes are included in the response in arbitrary order.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType30>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType32>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType34>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType36>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType38
+
+    reporterQuery1Tne1AQuery1Tne1A:
+      path: /types/{entityType}/attrs/{attrName}
+      method: GET
+      docs: >-
+        For example, query the pressure measurements of this month in all the
+        weather stations. Note in the response, the index and values arrays are
+        parallel. Also, when using aggrMethod, the aggregation is done by-entity
+        instance. In this case, the index array is just the fromDate and toDate
+        values user specified in the request (if any).
+      display-name: History of an attribute of N entities of the same type.
+      path-parameters:
+        entityType:
+          docs: >-
+            The entity type in which the query is restricted on. Used to
+            constraint the search to entities of this type, specially useful
+            when the entity id is not enough to uniquely identify an entity.
+          type: string
+        attrName:
+          docs: >-
+            The name of the attribute the query is interested on. It must be a
+            valid attribute of all the entities covered by the query scope.
+          type: string
+      request:
+        query-parameters:
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType39>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType41>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType43>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType45>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType47>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType49
+
+    reporterQuery1Tne1AQuery1Tne1AValue:
+      path: /types/{entityType}/attrs/{attrName}/value
+      method: GET
+      docs: >-
+        For example, query the average pressure (values only, no metadata) of
+        this month in all the weather stations.
+      display-name: History of an attribute (values only) of N entities of the same type.
+      path-parameters:
+        entityType:
+          docs: >-
+            The entity type in which the query is restricted on. Used to
+            constraint the search to entities of this type, specially useful
+            when the entity id is not enough to uniquely identify an entity.
+          type: string
+        attrName:
+          docs: >-
+            The name of the attribute the query is interested on. It must be a
+            valid attribute of all the entities covered by the query scope.
+          type: string
+      request:
+        query-parameters:
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType50>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType52>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType54>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType56>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType58>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType60
+
+    reporterQuery1TnenaQuery1Tnena:
+      path: /types/{entityType}
+      method: GET
+      docs: >-
+        For example, query the average pressure, temperature and humidity of
+        this month in all the weather stations.
+      display-name: History of N attributes of N entities of the same type.
+      path-parameters:
+        entityType:
+          docs: >-
+            The entity type in which the query is restricted on. Used to
+            constraint the search to entities of this type, specially useful
+            when the entity id is not enough to uniquely identify an entity.
+          type: string
+      request:
+        query-parameters:
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          attrs:
+            docs: >-
+              Optional. Comma-separated list of attribute names whose data are
+              to be included in the response. The attributes are retrieved in
+              the order specified by this parameter. If not specified, all
+              attributes are included in the response in arbitrary order.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType61>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType63>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType65>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType67>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType69>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType72
+
+    reporterQuery1TnenaQuery1TnenaValue:
+      path: /types/{entityType}/value
+      method: GET
+      docs: >-
+        For example, query the average pressure, temperature and humidity
+        (values only, no metadata) of this month in all the weather stations.
+      display-name: History of N attributes (values only) of N entities of the same type.
+      path-parameters:
+        entityType:
+          docs: >-
+            The entity type in which the query is restricted on. Used to
+            constraint the search to entities of this type, specially useful
+            when the entity id is not enough to uniquely identify an entity.
+          type: string
+      request:
+        query-parameters:
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          attrs:
+            docs: >-
+              Optional. Comma-separated list of attribute names whose data are
+              to be included in the response. The attributes are retrieved in
+              the order specified by this parameter. If not specified, all
+              attributes are included in the response in arbitrary order.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType73>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType75>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType77>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType79>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType81>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType84
+
+    reporterQueryNtne1AQueryNtne1A:
+      path: /attrs/{attrName}
+      method: GET
+      docs: >-
+        For example, query the average temperature of this month in all the
+        devices capable of measuring temperature. In this case, you are
+        responsible for providing entity types which contain the attrName.
+      display-name: History of an attribute of N entities of N types.
+      path-parameters:
+        attrName:
+          docs: >-
+            The name of the attribute the query is interested on. It must be a
+            valid attribute of all the entities covered by the query scope.
+          type: string
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType85>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType87>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType89>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType91>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType93>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType96
+
+    reporterQueryNtne1AQueryNtne1AValue:
+      path: /attrs/{attrName}/value
+      method: GET
+      docs: >-
+        For example, query the average temperature (values only, no metadata) of
+        this month in all the devices capable of measuring temperature. In this
+        case, you are reponsible for providing entity types which contain the
+        attrName.
+      display-name: History of an attribute (values only) of N entities of N types.
+      path-parameters:
+        attrName:
+          docs: >-
+            The name of the attribute the query is interested on. It must be a
+            valid attribute of all the entities covered by the query scope.
+          type: string
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType97>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType99>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType101>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType103>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType105>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType108
+
+    reporterQueryNtnenaQueryNtnena:
+      path: /attrs
+      method: GET
+      docs: >-
+        This is sort of a query all. The response will likely not fit into a
+        single response so an efficient paging mechanism and sensible defaults
+        will be required.
+      display-name: History of N attributes of N entities of N types.
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          attrs:
+            docs: >-
+              Optional. Comma-separated list of attribute names whose data are
+              to be included in the response. The attributes are retrieved in
+              the order specified by this parameter. If not specified, all
+              attributes are included in the response in arbitrary order.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType109>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType111>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType113>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType115>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType117>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType121
+
+    reporterQueryNtnenaQueryNtnenaValue:
+      path: /attrs/value
+      method: GET
+      docs: >-
+        This is sort of a query all. The response will likely not fit into a
+        single response so an efficient paging mechanism and sensible defaults
+        will be required.
+      display-name: History of N attributes (values only) of N entities of N types.
+      request:
+        query-parameters:
+          type:
+            docs: >-
+              Comma-separated list of entity types whose data are to be included
+              in the response. Use only one (no comma) when required. If used to
+              resolve ambiguity for the given entityId, make sure the given
+              entityId exists for this entityType.
+            type: optional<string>
+          id:
+            docs: >-
+              Optional. Comma-separated list of entity ids whose data are to be
+              included in the response.
+            type: optional<string>
+          attrs:
+            docs: >-
+              Optional. Comma-separated list of attribute names whose data are
+              to be included in the response. The attributes are retrieved in
+              the order specified by this parameter. If not specified, all
+              attributes are included in the response in arbitrary order.
+            type: optional<string>
+          aggrMethod:
+            docs: >-
+              Optional. The function to apply to the raw data filtered by the
+              query parameters. If not given, the returned data are the same raw
+              inserted data.
+            type: optional<_InlinedType122>
+          aggrPeriod:
+            docs: >-
+              Optional. If not defined, the aggregation will apply to all the
+              values contained in the search result. If defined, the aggregation
+              function will instead be applied N times, once for each period,
+              and all those results will be considered for the response. For
+              example, a query asking for the average temperature of an
+              attribute will typically return 1 value. However, with an
+              aggregationPeriod of day, you get the daily average of the
+              temperature instead (more than one value assuming you had
+              measurements across many days within the scope of your search
+              result). aggrPeriod must be accompanied by an aggrMethod, and the
+              aggrMethod will be applied to all the numeric attributes specified
+              in attrs; the rest of the non-numerical attrs will be ignored. By
+              default, the response is grouped by entity_id. See aggrScope to
+              create aggregation across entities.
+            type: optional<_InlinedType124>
+          aggrScope:
+            docs: >-
+              Optional. (This parameter is not yet supported). When the query
+              results cover historical data for multiple entities instances, you
+              can define the aggregation method to be applied for each entity
+              instance [entity] or across them [global].
+            type: optional<_InlinedType126>
+          options:
+            docs: >-
+              Optional. (This parameter is not yet supported). Options
+              dictionary to format output. See definition in NGSIv2 for example
+              here:
+              https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities
+            type: optional<_InlinedType128>
+          fromDate:
+            docs: >-
+              Optional. The starting date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          toDate:
+            docs: >-
+              Optional. The final date and time (inclusive) from which the
+              context information is queried. Must be in ISO8601 format (e.g.,
+              2018-01-05T15:44:34)
+            type: optional<string>
+          lastN:
+            docs: >-
+              Optional. Used to request only the last N values that satisfy the
+              request conditions.
+            type: optional<integer>
+          limit:
+            docs: >-
+              Optional. Maximum number of results to retrieve in a single
+              response.
+            type: optional<integer>
+          offset:
+            docs: >-
+              Optional. Offset to apply to the response results. For example, if
+              the query was to return 10 results and you use an offset of 1, the
+              response will return the last 9 values. Make sure you don't give
+              more offset than the number of results.
+            type: optional<integer>
+          georel:
+            docs: >-
+              Optional. It specifies a spatial relationship between matching
+              entities and a reference shape (geometry). This parameter is used
+              to perform geographical queries with the same semantics as in the
+              FIWARE-NGSI v2 Specification. Full details can be found in the
+              Geographical Queries section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+          geometry:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape to be used for geographical queries
+              and has the same semantics as in the FIWARE-NGSI v2 Specification.
+              Full details can be found in the Geographical Queries section of
+              the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<_InlinedType130>
+          coords:
+            docs: >-
+              Optional but required if georel is specified. This parameter
+              defines the reference shape (geometry) in terms of WGS 84
+              coordinates and has the same semantics as in the FIWARE-NGSI v2
+              Specification, except we only accept coordinates in decimal
+              degrees---e.g. `40.714,-74.006` is okay, but not `40 42' 51'',74
+              0' 21''`. Full details can be found in the Geographical Queries
+              section of the specification:
+              http://fiware.github.io/specifications/ngsiv2/stable/.
+            type: optional<string>
+        headers:
+          fiware-Service:
+            docs: >-
+              The corresponding 'fiware-service' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+          fiware-ServicePath:
+            docs: >-
+              The corresponding 'fiware-servicepath' header. See
+              http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy
+            type: optional<string>
+      response: _InlinedType134
+
+types:
+  IndexArray:
+    docs: >-
+      Array of the timestamps which are indexes of the response for the
+      requested data. It's a parallel array to 'values'. The timestamp will be
+      in the ISO8601 format (e.g. 2010-10-10T07:09:00.792) or in milliseconds
+      since epoch whichever format was used in the input (notification), but
+      ALWAYS in UTC. When using aggregation options, the format of this remains
+      the same, only the semantics will change. For example, if aggrPeriod is
+      day, each index will be a valid timestamp of a moment in the corresponding
+      day.
+    type: list<string>
+
+  ValuesArray:
+    docs: >-
+      Array of values of the selected attribute, in the same corresponding order
+      of the 'index' array. When using aggregation options, the format of this
+      remains the same, only the semantics will change. For example, if
+      aggrPeriod is day, each value of course may not correspond to original
+      measurements but rather the aggregate of measurements in each day.
+    type: list<map<string, unknown>>
+
+  IndexedValues:
+    properties:
+      index: optional<IndexArray>
+      values: optional<ValuesArray>
+
+  AttributeValues:
+    properties:
+      attrName: optional<string>
+      values: optional<ValuesArray>
+
+  EntityIndexedValues:
+    properties:
+      entityId: optional<string>
+      index: optional<IndexArray>
+      values: optional<ValuesArray>
+
+  _InlinedType3:
+    properties:
+      entityId: optional<string>
+      entityType: optional<string>
+      index: optional<string>
+
+  _InlinedType5:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType7:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType9:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType11:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType12:
+    properties:
+      entityId: optional<string>
+      entityType: optional<string>
+      attrName: optional<string>
+      index: optional<IndexArray>
+      values: optional<ValuesArray>
+
+  _InlinedType14:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType16:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType18:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType20:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType22:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType24:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType26:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType28:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType29:
+    properties:
+      entityId: optional<string>
+      entityType: optional<string>
+      index: optional<IndexArray>
+      attributes: optional<list<AttributeValues>>
+
+  _InlinedType31:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType33:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType35:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType37:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType38:
+    properties:
+      index: optional<IndexArray>
+      values: optional<list<AttributeValues>>
+
+  _InlinedType40:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType42:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType44:
+    enum:
+      - global
+      - entity
+
+  _InlinedType46:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType48:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType49:
+    properties:
+      entityType: optional<string>
+      attrName: optional<string>
+      entities: optional<list<EntityIndexedValues>>
+
+  _InlinedType51:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType53:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType55:
+    enum:
+      - global
+      - entity
+
+  _InlinedType57:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType59:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType60:
+    properties:
+      entities: optional<list<EntityIndexedValues>>
+
+  _InlinedType62:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType64:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType66:
+    enum:
+      - global
+      - entity
+
+  _InlinedType68:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType70:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType71:
+    properties:
+      entityId: optional<string>
+      index: optional<IndexArray>
+      attributes: optional<list<AttributeValues>>
+
+  _InlinedType72:
+    properties:
+      entityType: optional<string>
+      entities: optional<list<_InlinedType71>>
+
+  _InlinedType74:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType76:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType78:
+    enum:
+      - global
+      - entity
+
+  _InlinedType80:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType82:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType83:
+    properties:
+      entityId: optional<string>
+      index: optional<IndexArray>
+      attributes: optional<list<AttributeValues>>
+
+  _InlinedType84:
+    properties:
+      entityType: optional<string>
+      entities: optional<list<_InlinedType83>>
+
+  _InlinedType86:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType88:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType90:
+    enum:
+      - global
+      - entity
+
+  _InlinedType92:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType94:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType95:
+    properties:
+      entityType: optional<string>
+      entities: optional<list<EntityIndexedValues>>
+
+  _InlinedType96:
+    properties:
+      attrName: optional<string>
+      types: optional<list<_InlinedType95>>
+
+  _InlinedType98:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType100:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType102:
+    enum:
+      - global
+      - entity
+
+  _InlinedType104:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType106:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType107:
+    properties:
+      entityType: optional<string>
+      entities: optional<list<EntityIndexedValues>>
+
+  _InlinedType108:
+    properties:
+      attrName: optional<string>
+      types: optional<list<_InlinedType107>>
+
+  _InlinedType110:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType112:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType114:
+    enum:
+      - global
+      - entity
+
+  _InlinedType116:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType118:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType119:
+    properties:
+      entityType: optional<string>
+      entities: optional<list<EntityIndexedValues>>
+
+  _InlinedType120:
+    properties:
+      attrName: optional<string>
+      types: optional<list<_InlinedType119>>
+
+  _InlinedType121:
+    properties:
+      attrs: optional<list<_InlinedType120>>
+
+  _InlinedType123:
+    enum:
+      - count
+      - sum
+      - avg
+      - min
+      - max
+
+  _InlinedType125:
+    enum:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+      - second
+
+  _InlinedType127:
+    enum:
+      - global
+      - entity
+
+  _InlinedType129:
+    enum:
+      - keyValues
+      - values
+
+  _InlinedType131:
+    enum:
+      - point
+      - line
+      - polygon
+      - box
+
+  _InlinedType132:
+    properties:
+      entityType: optional<string>
+      entities: optional<list<EntityIndexedValues>>
+
+  _InlinedType133:
+    properties:
+      attrName: optional<string>
+      types: optional<list<_InlinedType132>>
+
+  _InlinedType134:
+    properties:
+      values: optional<list<_InlinedType133>>
