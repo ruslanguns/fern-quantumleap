@@ -26,3 +26,11 @@ fern init --openapi openapi_v3.yaml
 ```bash
 fern generate
 ```
+
+### References
+
+- QuantumLeap API Reference:
+  - [Repository](https://github.com/FIWARE-GEs/quantum-leap/blob/master/specification/quantumleap.yml)
+  - [Swagger](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb)
+- [Fern](https://docs.buildwithfern.com/)
+- [Fern Typescript-SDK](https://docs.buildwithfern.com/showcase/typescript-sdk)
